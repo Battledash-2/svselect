@@ -15,7 +15,7 @@ interface SelectParams {
 		newValue: Param[] | Param,
 		oldValue: Param[] | Param
 	) => boolean;
-	selected: Param[] | Param;
+	selected?: Param[] | Param;
 }
 
 export class Select extends SvelteComponentTyped<SelectParams> {}
