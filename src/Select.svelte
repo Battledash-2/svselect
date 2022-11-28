@@ -55,7 +55,11 @@
 						break;
 					}
 
-					handleOptionClick(null, filteredOptions[highlightedIdx]);
+					const _n = highlightedIdx === filteredOptions.length ? {
+						label: searchElm.value,
+						key: searchElm.value.toLowerCase(),
+					} : filteredOptions[highlightedIdx];
+					handleOptionClick(null, _n);
 
 					e.preventDefault();
 					break;
