@@ -210,7 +210,7 @@
 				{option.label}
 			</div>
 		{:else}
-			{#if !allowcreate} Couldn't find matching option. {/if}
+			{#if !allowcreate} <div class="option-note">Couldn't find matching option.</div> {/if}
 		{/each}
 		{#if searchElm?.value && allowcreate}
 			<div
@@ -277,6 +277,10 @@
 	}
 	.values {
 		width: 100%;
+	}
+
+	.option-note {
+		padding: 0.375rem 0.75rem;
 	}
 
 	.option {
