@@ -6,6 +6,7 @@
 	export let multiple = false;
 	export let onChange = (...o) => false || null;
 	export let allowcreate = false;
+	export let hideselected = false;
 
 	// dynamic
 	export let selected = multiple ? [] : {};
@@ -141,7 +142,7 @@
 	let filteredOptions = options;
 	$: options,
 		(filteredOptions = options.filter((c) =>
-			c?.label?.includes(searchElm?.value || '')
+			c?.label?.includes(searchElm?.value || '') && hideselected ? !selected.includes(c) : true
 		));
 </script>
 
