@@ -58,7 +58,14 @@
 					const _n = highlightedIdx === filteredOptions.length ? {
 						label: searchElm.value,
 						key: searchElm.value.toLowerCase(),
+						custom: true,
 					} : filteredOptions[highlightedIdx];
+					
+					if (highlightedIdx === filteredOptions.length) {
+						options.push(_n);
+						options = options;
+					}
+					
 					handleOptionClick(null, _n);
 
 					e.preventDefault();
