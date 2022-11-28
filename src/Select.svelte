@@ -221,7 +221,7 @@
 		{:else}
 			{#if !allowcreate} <div class="option-note">Couldn't find matching option.</div> {/if}
 		{/each}
-		{#if searchElm?.value && !filteredOptions.includes(searchElm?.value) && allowcreate}
+		{#if searchElm?.value && !filteredOptions.some(c => c.label === searchElm?.value) && allowcreate}
 			<div
 				class="option"
 				class:hovered={filteredOptions.length < 1}
