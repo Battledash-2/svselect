@@ -210,7 +210,7 @@
 				{option.label}
 			</div>
 		{:else}
-			{#if !allowcreate} Couldn't find matching option. (/if)
+			{#if !allowcreate} Couldn't find matching option. {/if}
 		{/each}
 		{#if searchElm?.value && allowcreate}
 			<div
