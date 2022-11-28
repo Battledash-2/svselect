@@ -142,7 +142,7 @@
 	let filteredOptions = options;
 	$: options,
 		(filteredOptions = options.filter((c) =>
-			c?.label?.includes(searchElm?.value || '') && hideselected ? !selected.includes(c) : true
+			c?.label?.includes(searchElm?.value || '') && (hideselected ? !selected.includes(c) : true)
 		));
 </script>
 
