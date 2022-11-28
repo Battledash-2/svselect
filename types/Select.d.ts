@@ -10,6 +10,7 @@ interface SelectParams {
 	options?: Param[];
 	multiple?: boolean;
 	allowcreate?: boolean;
+    hideselected: boolean;
 	onChange?: (
 		newValue: Param[] | Param,
 		oldValue: Param[] | Param
