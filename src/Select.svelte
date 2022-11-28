@@ -41,7 +41,7 @@
 				searchElm.focus();
 				// searchElm.selectionStart = searchElm.value.length;
 				// @ts-ignore
-				if (e.clientX > searchElm.getBoundingClientRect().left)
+				if (e.clientX > searchElm.getBoundingClientRect().right)
 					searchElm.selectionStart = searchElm.value.length;
 			}
 		});
