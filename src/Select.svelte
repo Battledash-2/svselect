@@ -94,6 +94,15 @@
 					e.preventDefault();
 					break;
 			}
+			searchElm.style.width =
+					Math.max(
+						searchElm.value.length,
+						searchElm.placeholder.length,
+						1
+					) +
+					1 +
+					'ch';
+				setHighlighted(0);
 		}
 		// searchElm.addEventListener('keydown', handleKeydown);
 		mainElm.addEventListener('keydown', handleKeydown);
