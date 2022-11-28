@@ -51,7 +51,10 @@
 			const key = e.code.toLowerCase();
 			switch (key) {
 				case 'backspace':
-					if (searchElm.value.length === 0 && Array.isArray(selected)) selected.pop();
+					if (searchElm.value.length === 0 && Array.isArray(selected)) {
+						selected.pop();
+						selected = selected;
+					}
 					break;
 				case 'enter':
 					if (!optionsElm.classList.contains('show')) {
