@@ -50,7 +50,6 @@
 			const key = e.code.toLowerCase();
 			switch (key) {
 				case 'enter':
-				case 'space':
 					if (!optionsElm.classList.contains('show')) {
 						optionsElm.classList.add('show');
 						break;
