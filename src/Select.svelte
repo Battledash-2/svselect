@@ -56,7 +56,7 @@
 						break;
 					}
 
-					const _n = highlightedIdx === filteredOptions.length ? {
+					const _n = (allowcreate && highlightedIdx === filteredOptions.length) ? {
 						label: searchElm.value,
 						key: searchElm.value.toLowerCase(),
 						custom: true,
