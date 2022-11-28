@@ -50,6 +50,9 @@
 		function handleKeydown(e) {
 			const key = e.code.toLowerCase();
 			switch (key) {
+				case 'backspace':
+					if (searchElm.value.length === 0 && Array.isArray(selected)) selected.pop();
+					break;
 				case 'enter':
 					if (!optionsElm.classList.contains('show')) {
 						optionsElm.classList.add('show');
