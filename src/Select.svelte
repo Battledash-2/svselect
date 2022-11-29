@@ -49,7 +49,6 @@
 		searchElm.addEventListener('blur', () => setTimeout(blur, 100));
 		function handleKeydown(e) {
 			const key = e.code.toLowerCase();
-			console.log(key);
 			switch (key) {
 				case 'backspace':
 					if (
@@ -96,7 +95,6 @@
 						break;
 					}
 					let newIdx = highlightedIdx + (key === 'arrowup' ? -1 : 1);
-					console.log(highlightedIdx, newIdx);
 					if (
 						newIdx <
 							(allowcreate && searchElm?.value
@@ -151,7 +149,6 @@
 	function setHighlighted(index) {
 		if (optionsElm == null) return (highlightedIdx = index);
 		[...optionsElm.children].forEach((child, idx) => {
-			console.log(index, idx, 'a');
 			if (index === idx) {
 				// @ts-ignore
 				highlightedElm = child;
