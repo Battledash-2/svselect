@@ -35,6 +35,13 @@
 		mainElm.blur();
 	}
 
+	function setSearchElmWidth() {
+		searchElm.style.width =
+			Math.max(searchElm.value.length, searchElm.placeholder.length, 1) +
+			1 +
+			'ch';
+	}
+
 	onMount(() => {
 		mainElm.addEventListener('click', (e) => {
 			mainElm.classList.toggle('focus');
@@ -53,6 +60,8 @@
 			optionsElm.classList.add('show');
 			searchElm.focus();
 		}
+
+		setSearchElmWidth();
 
 		searchElm.addEventListener('blur', () => setTimeout(blur, 100));
 		function handleKeydown(e) {
@@ -119,14 +128,7 @@
 					e.preventDefault();
 					break;
 			}
-			searchElm.style.width =
-				Math.max(
-					searchElm.value.length,
-					searchElm.placeholder.length,
-					1
-				) +
-				1 +
-				'ch';
+			setSearchElmWidth();
 		}
 		// searchElm.addEventListener('keydown', handleKeydown);
 		mainElm.addEventListener('keydown', handleKeydown);
@@ -202,16 +204,7 @@
 		{/if}
 		<input
 			{placeholder}
-			on:input={(e) => {
-				searchElm.style.width =
-					Math.max(
-						searchElm.value.length,
-						searchElm.placeholder.length,
-						1
-					) +
-					1 +
-					'ch';
-			}}
+			on:input={setSearchElmWidth}
 			bind:this={searchElm}
 			class="search"
 		/>
