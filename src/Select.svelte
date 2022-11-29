@@ -8,9 +8,6 @@
 	export let allowcreate = false;
 	export let hideselected = false;
 
-	// html static
-	export let placeholder = '';
-
 	// dynamic
 	export let selected = multiple ? [] : {};
 
@@ -52,6 +49,7 @@
 		searchElm.addEventListener('blur', () => setTimeout(blur, 100));
 		function handleKeydown(e) {
 			const key = e.code.toLowerCase();
+			console.log(key);
 			switch (key) {
 				case 'backspace':
 					if (
@@ -98,14 +96,16 @@
 						break;
 					}
 					let newIdx = highlightedIdx + (key === 'arrowup' ? -1 : 1);
+					console.log(highlightedIdx, newIdx);
 					if (
 						newIdx <
 							(allowcreate && searchElm?.value
 								? filteredOptions.length + 1
 								: filteredOptions.length) &&
 						newIdx >= 0
-					)
+					) {
 						setHighlighted(newIdx);
+					}
 					e.preventDefault();
 					break;
 			}
@@ -117,7 +117,6 @@
 				) +
 				1 +
 				'ch';
-			setHighlighted(0);
 		}
 		// searchElm.addEventListener('keydown', handleKeydown);
 		mainElm.addEventListener('keydown', handleKeydown);
@@ -150,7 +149,9 @@
 	}
 
 	function setHighlighted(index) {
+		if (optionsElm == null) return (highlightedIdx = index);
 		[...optionsElm.children].forEach((child, idx) => {
+			console.log(index, idx, 'a');
 			if (index === idx) {
 				// @ts-ignore
 				highlightedElm = child;
@@ -172,7 +173,7 @@
 		));
 </script>
 
-<div bind:this={mainElm} tabindex="0" class="select" {...$$restProps}>
+<div bind:this={mainElm} tabindex="0" class="select">
 	<span class="values" class:flex={multiple && Array.isArray(selected)}>
 		{#if multiple}
 			{#each Array.isArray(selected) && selected as iSelected}
@@ -191,7 +192,6 @@
 			{selected?.label || ''}
 		{/if}
 		<input
-			{placeholder}
 			on:input={(e) => {
 				searchElm.style.width =
 					Math.max(
@@ -201,7 +201,6 @@
 					) +
 					1 +
 					'ch';
-				setHighlighted(0);
 			}}
 			bind:this={searchElm}
 			class="search"
