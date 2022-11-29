@@ -8,6 +8,9 @@
 	export let allowcreate = false;
 	export let hideselected = false;
 
+	// html static
+	export let placeholder = '';
+
 	// dynamic
 	export let selected = multiple ? [] : {};
 
@@ -51,7 +54,10 @@
 			const key = e.code.toLowerCase();
 			switch (key) {
 				case 'backspace':
-					if (searchElm.value.length === 0 && Array.isArray(selected)) {
+					if (
+						searchElm.value.length === 0 &&
+						Array.isArray(selected)
+					) {
 						selected.pop();
 						selected = selected;
 					}
@@ -62,17 +68,20 @@
 						break;
 					}
 
-					const _n = (allowcreate && highlightedIdx === filteredOptions.length) ? {
-						label: searchElm.value,
-						key: searchElm.value.toLowerCase(),
-						custom: true,
-					} : filteredOptions[highlightedIdx];
-					
+					const _n =
+						allowcreate && highlightedIdx === filteredOptions.length
+							? {
+									label: searchElm.value,
+									key: searchElm.value.toLowerCase(),
+									custom: true,
+							  }
+							: filteredOptions[highlightedIdx];
+
 					if (highlightedIdx === filteredOptions.length) {
 						options.push(_n);
 						options = options;
 					}
-					
+
 					handleOptionClick(null, _n, false);
 
 					e.preventDefault();
@@ -101,14 +110,14 @@
 					break;
 			}
 			searchElm.style.width =
-					Math.max(
-						searchElm.value.length,
-						searchElm.placeholder.length,
-						1
-					) +
-					1 +
-					'ch';
-				setHighlighted(0);
+				Math.max(
+					searchElm.value.length,
+					searchElm.placeholder.length,
+					1
+				) +
+				1 +
+				'ch';
+			setHighlighted(0);
 		}
 		// searchElm.addEventListener('keydown', handleKeydown);
 		mainElm.addEventListener('keydown', handleKeydown);
@@ -119,7 +128,7 @@
 	function deleteItem(item) {
 		selected = selected.filter((c) => c !== item);
 	}
-	function handleOptionClick(event, option, _blur=true) {
+	function handleOptionClick(event, option, _blur = true) {
 		if (event) event.stopPropagation();
 		let shouldChange = onChange(selected, option);
 		if (shouldChange || shouldChange == null) {
@@ -156,12 +165,14 @@
 
 	let filteredOptions = options;
 	$: options,
-		(filteredOptions = options.filter((c) =>
-			c?.label?.includes(searchElm?.value || '') && (hideselected ? !selected.includes(c) : true)
+		(filteredOptions = options.filter(
+			(c) =>
+				c?.label?.includes(searchElm?.value || '') &&
+				(hideselected ? !selected.includes(c) : true)
 		));
 </script>
 
-<div bind:this={mainElm} tabindex="0" class="select">
+<div bind:this={mainElm} tabindex="0" class="select" {...$$restProps}>
 	<span class="values" class:flex={multiple && Array.isArray(selected)}>
 		{#if multiple}
 			{#each Array.isArray(selected) && selected as iSelected}
@@ -180,6 +191,7 @@
 			{selected?.label || ''}
 		{/if}
 		<input
+			{placeholder}
 			on:input={(e) => {
 				searchElm.style.width =
 					Math.max(
@@ -225,9 +237,11 @@
 				{option.label}
 			</div>
 		{:else}
-			{#if !allowcreate} <div class="option-note">Couldn't find matching option.</div> {/if}
+			{#if !allowcreate}
+				<div class="option-note">Couldn't find matching option.</div>
+			{/if}
 		{/each}
-		{#if searchElm?.value && !filteredOptions.some(c => c.label === searchElm?.value) && allowcreate}
+		{#if searchElm?.value && !filteredOptions.some((c) => c.label === searchElm?.value) && allowcreate}
 			<div
 				class="option"
 				class:hovered={filteredOptions.length < 1}
