@@ -8,6 +8,9 @@
 	export let allowcreate = false;
 	export let hideselected = false;
 
+	// html static
+	export let placeholder = '';
+
 	// dynamic
 	export let selected = multiple ? [] : {};
 
@@ -179,7 +182,7 @@
 		));
 </script>
 
-<div bind:this={mainElm} tabindex="0" class="select">
+<div bind:this={mainElm} tabindex="0" class="select" {...$$restProps}>
 	<span class="values" class:flex={multiple && Array.isArray(selected)}>
 		{#if multiple}
 			{#each Array.isArray(selected) && selected as iSelected}
@@ -198,6 +201,7 @@
 			{selected?.label || ''}
 		{/if}
 		<input
+			{placeholder}
 			on:input={(e) => {
 				searchElm.style.width =
 					Math.max(
