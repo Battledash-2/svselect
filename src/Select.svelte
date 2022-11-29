@@ -10,6 +10,8 @@
 
 	// html static
 	export let placeholder = '';
+	export let style = '';
+	export let id = '';
 
 	// dynamic
 	export let selected = multiple ? [] : {};
@@ -184,7 +186,7 @@
 		));
 </script>
 
-<div bind:this={mainElm} tabindex="0" class="select" {...$$restProps}>
+<div bind:this={mainElm} {style} {id} tabindex="0" class="select">
 	<span class="values" class:flex={multiple && Array.isArray(selected)}>
 		{#if multiple}
 			{#each Array.isArray(selected) && selected as iSelected}

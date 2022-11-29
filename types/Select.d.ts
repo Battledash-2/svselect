@@ -17,8 +17,8 @@ interface SelectParams {
 	) => boolean;
 	selected?: Param[] | Param;
 	placeholder?: string;
+	id?: string;
+	style?: string;
 }
 
-export class Select extends SvelteComponentTyped<
-	SelectParams & HTMLDivElement
-> {}
+export class Select extends SvelteComponentTyped<SelectParams> {}
