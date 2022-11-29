@@ -73,7 +73,7 @@
 						options = options;
 					}
 					
-					handleOptionClick(null, _n);
+					handleOptionClick(null, _n, false);
 
 					e.preventDefault();
 					break;
@@ -119,7 +119,7 @@
 	function deleteItem(item) {
 		selected = selected.filter((c) => c !== item);
 	}
-	function handleOptionClick(event, option) {
+	function handleOptionClick(event, option, _blur=true) {
 		if (event) event.stopPropagation();
 		let shouldChange = onChange(selected, option);
 		if (shouldChange || shouldChange == null) {
@@ -135,7 +135,7 @@
 				selected = option;
 			}
 
-			blur();
+			if (_blur) blur();
 			searchElm.value = '';
 		}
 	}
