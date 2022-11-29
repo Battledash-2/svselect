@@ -46,6 +46,11 @@
 			}
 		});
 
+		function focusElm() {
+			optionsElm.classList.add('show');
+			searchElm.focus();
+		}
+
 		searchElm.addEventListener('blur', () => setTimeout(blur, 100));
 		function handleKeydown(e) {
 			const key = e.code.toLowerCase();
@@ -61,7 +66,8 @@
 					break;
 				case 'enter':
 					if (!optionsElm.classList.contains('show')) {
-						optionsElm.classList.add('show');
+						// optionsElm.classList.add('show');
+						focusElm();
 						break;
 					}
 
@@ -77,10 +83,9 @@
 					if (highlightedIdx === filteredOptions.length) {
 						options.push(_n);
 						options = options;
-						if (hideselected) {
-							setHighlighted(filteredOptions.length - 1);
-						}
 					}
+
+					if (hideselected) setHighlighted(highlightedIdx - 1);
 
 					handleOptionClick(null, _n, false);
 
@@ -94,7 +99,8 @@
 				case 'arrowup':
 				case 'arrowdown':
 					if (!optionsElm.classList.contains('show')) {
-						optionsElm.classList.add('show');
+						// optionsElm.classList.add('show');
+						focusElm();
 						break;
 					}
 					let newIdx = highlightedIdx + (key === 'arrowup' ? -1 : 1);
@@ -121,7 +127,6 @@
 		}
 		// searchElm.addEventListener('keydown', handleKeydown);
 		mainElm.addEventListener('keydown', handleKeydown);
-		if (!multiple) searchElm.addEventListener('focus', () => {});
 		setHighlighted(0);
 	});
 
@@ -150,6 +155,7 @@
 	}
 
 	function setHighlighted(index) {
+		if (index < 0) index = 0;
 		if (optionsElm == null) return (highlightedIdx = index);
 		[...optionsElm.children].forEach((child, idx) => {
 			if (index === idx) {
@@ -236,7 +242,7 @@
 				{option.label}
 			</div>
 		{:else}
-			{#if !allowcreate}
+			{#if !allowcreate || !searchElm?.value}
 				<div class="option-note">Couldn't find matching option.</div>
 			{/if}
 		{/each}
