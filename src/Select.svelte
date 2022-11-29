@@ -77,6 +77,9 @@
 					if (highlightedIdx === filteredOptions.length) {
 						options.push(_n);
 						options = options;
+						if (hideselected) {
+							setHighlighted(filteredOptions.length - 1);
+						}
 					}
 
 					handleOptionClick(null, _n, false);
