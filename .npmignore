@@ -19,6 +19,7 @@ App.svelte
 main.js
 vite.config.js
 index.html
+backup-just-incase.svelte
 
 # Editor directories and files
 .vscode/*

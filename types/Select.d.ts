@@ -21,7 +21,7 @@ interface SelectParams {
 	placeholder?: string;
 	id?: string;
 	style?: string;
-	getSelected?: () => Param[] | Param;
+	getSelected?: () => Writable<Param[] | Param>;
 }
 
 export class Select extends SvelteComponentTyped<SelectParams> {}
