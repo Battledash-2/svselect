@@ -146,18 +146,28 @@
 		selected.splice(selected.indexOf(item), 1);
 		selected = selected;
 	}
-	function handleOptionClick(event, option, _blur = true, shouldDel) {
+	function handleOptionClick(
+		event,
+		option,
+		_blur = true,
+		shouldChange = true,
+		shouldChangeObj = {}
+	) {
 		if (event) event.stopPropagation();
 
-		shouldDel = shouldDel == null ? selected.includes(option) : shouldDel;
-		let shouldChange = onChange(selected, option, !shouldDel);
+		let shouldDel = selected.includes(option);
+		shouldChange = shouldChange
+			? onChange(selected, option, !shouldDel)
+			: shouldChangeObj;
 
 		if (!shouldChange && shouldChange != null) return;
 
 		if (multiple && Array.isArray(selected)) {
 			if (shouldChange != null) {
 				if (typeof shouldChange === 'object') {
+					// @ts-ignore
 					option.label = shouldChange?.label;
+					// @ts-ignore
 					option.key = shouldChange?.key;
 				} else {
 					option.key = shouldChange;
@@ -282,12 +292,12 @@
 					};
 
 					const r = onChange(selected, option, true);
-					if (!r || r != null) return;
+					if (!r) return;
 
 					options.push(option);
 					options = options;
 
-					handleOptionClick(e, option);
+					handleOptionClick(e, option, true, false, r);
 					searchElm.value = '';
 				}}
 			>
