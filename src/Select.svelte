@@ -16,6 +16,11 @@
 	// dynamic
 	export let selected = multiple ? [] : {};
 
+	// thingy
+	export function getSelected() {
+		return selected;
+	}
+
 	// code
 	/** @type {HTMLDivElement} */
 	let mainElm;
@@ -138,7 +143,8 @@
 	});
 
 	function deleteItem(item) {
-		selected = selected.filter((c) => c !== item);
+		selected.splice(selected.indexOf(item), 1);
+		selected = selected;
 	}
 	function handleOptionClick(event, option, _blur = true) {
 		if (event) event.stopPropagation();
@@ -216,7 +222,10 @@
 		class="clear"
 		on:click={(e) => {
 			e.stopPropagation();
-			selected = multiple ? [] : {};
+			if (multiple) {
+				selected.splice(0, selected.length);
+				selected = selected;
+			} else selected = {};
 		}}
 	>
 		&times;
