@@ -347,6 +347,7 @@
 		box-shadow: 0.05em 0.05em 0.2em rgb(210, 210, 210);
 		z-index: 100;
 		display: none;
+		background: #fff;
 	}
 
 	.caret {
@@ -399,5 +400,6 @@
 	.select:has(.search:focus) -- would use if supported mainstream */ {
 		border: 1px solid #86b7fe;
 		box-shadow: 0 0 0 0.25em #0d6efd40;
+		background: #fff;
 	}
 </style>
