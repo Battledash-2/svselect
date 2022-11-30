@@ -15,7 +15,7 @@ interface SelectParams {
 		newValue: Param[] | Param,
 		oldValue: Param[] | Param,
 		addOrDelete: boolean
-	) => Param | boolean;
+	) => Param | boolean | void;
 	selected?: Param[] | Param;
 	placeholder?: string;
 	id?: string;
