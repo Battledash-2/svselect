@@ -1,4 +1,5 @@
 import { SvelteComponentTyped } from 'svelte';
+import { Writable } from 'svelte/store';
 
 interface Param {
 	label: string;
@@ -16,7 +17,7 @@ interface SelectParams {
 		oldValue: Param[] | Param,
 		addOrDelete: boolean
 	) => Param | boolean | void;
-	selected?: Param[] | Param;
+	selected?: Writable<Param[] | Param>;
 	placeholder?: string;
 	id?: string;
 	style?: string;

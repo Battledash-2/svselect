@@ -1,7 +1,7 @@
 {
 	"name": "svselect",
 	"private": false,
-	"version": "1.0.0",
+	"version": "1.0.0types",
 	"type": "module",
 	"main": "./src/index.js",
 	"types": "./types/index.d.ts",
