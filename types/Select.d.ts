@@ -13,8 +13,9 @@ interface SelectParams {
 	hideselected?: boolean;
 	onChange?: (
 		newValue: Param[] | Param,
-		oldValue: Param[] | Param
-	) => boolean;
+		oldValue: Param[] | Param,
+		addOrDelete: boolean
+	) => Param | boolean;
 	selected?: Param[] | Param;
 	placeholder?: string;
 	id?: string;

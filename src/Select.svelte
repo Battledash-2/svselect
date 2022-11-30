@@ -146,25 +146,37 @@
 		selected.splice(selected.indexOf(item), 1);
 		selected = selected;
 	}
-	function handleOptionClick(event, option, _blur = true) {
+	function handleOptionClick(event, option, _blur = true, shouldDel) {
 		if (event) event.stopPropagation();
-		let shouldChange = onChange(selected, option);
-		if (shouldChange || shouldChange == null) {
-			if (multiple && Array.isArray(selected)) {
-				if (selected.includes(option)) {
-					// selected.splice(selected.indexOf(option), 1);
-					deleteItem(option);
-				} else {
-					selected.push(option);
-					selected = selected; // tell svelte to rerender
-				}
-			} else {
-				selected = option;
-			}
 
-			if (_blur) blur();
-			searchElm.value = '';
+		shouldDel = shouldDel == null ? selected.includes(option) : shouldDel;
+		let shouldChange = onChange(selected, option, !shouldDel);
+
+		if (!shouldChange && shouldChange != null) return;
+
+		if (multiple && Array.isArray(selected)) {
+			if (shouldChange != null) {
+				if (typeof shouldChange === 'object') {
+					option.label = shouldChange?.label;
+					option.key = shouldChange?.key;
+				} else {
+					option.key = shouldChange;
+				}
+				selected.push(option);
+				selected = selected;
+			} else if (shouldDel) {
+				// selected.splice(selected.indexOf(option), 1);
+				deleteItem(option);
+			} else {
+				selected.push(option);
+				selected = selected; // tell svelte to rerender
+			}
+		} else {
+			selected = option;
 		}
+
+		if (_blur) blur();
+		searchElm.value = '';
 	}
 
 	function setHighlighted(index) {
@@ -199,7 +211,8 @@
 				<div
 					on:click={(e) => {
 						e.stopPropagation();
-						deleteItem(iSelected);
+						let r = onChange(selected, iSelected, false);
+						if (r || r == null) deleteItem(iSelected);
 						optionsElm.classList.remove('show');
 					}}
 					class="value"
@@ -267,6 +280,9 @@
 						key,
 						custom: true,
 					};
+
+					const r = onChange(selected, option, true);
+					if (!r || r != null) return;
 
 					options.push(option);
 					options = options;
