@@ -1,6 +1,5 @@
 <script>
 	import { onMount } from 'svelte';
-	import { writable } from 'svelte/store';
 
 	// static
 	export let options = []; // { label: string, key: string | number }
@@ -15,16 +14,11 @@
 	export let id = '';
 
 	// dynamic
-	export let selected = writable(
-		multiple ? [] : { label: '', key: '', custom: false }
-	);
-
-	let _sel = null;
-	selected.subscribe((v) => (_sel = v));
+	export let selected = multiple ? [] : {};
 
 	// thingy
 	export function getSelected() {
-		return _sel;
+		return selected;
 	}
 
 	// code
@@ -81,10 +75,12 @@
 			const key = e.code.toLowerCase();
 			switch (key) {
 				case 'backspace':
-					if (searchElm.value.length === 0) {
-						selected.update(
-							(prev) => Array.isArray(prev) && prev.pop() && prev
-						);
+					if (
+						searchElm.value.length === 0 &&
+						Array.isArray(selected)
+					) {
+						selected.pop();
+						selected = selected;
 					}
 					break;
 				case 'enter':
@@ -147,12 +143,8 @@
 	});
 
 	function deleteItem(item) {
-		selected.update(
-			(prev) =>
-				Array.isArray(prev) &&
-				prev.splice(prev.indexOf(item), 1) &&
-				prev
-		);
+		selected.splice(selected.indexOf(item), 1);
+		selected = selected;
 	}
 	function handleOptionClick(
 		event,
@@ -163,14 +155,14 @@
 	) {
 		if (event) event.stopPropagation();
 
-		let shouldDel = Array.isArray(_sel) ? _sel.includes(option) : false;
+		let shouldDel = selected.includes(option);
 		shouldChange = shouldChange
-			? onChange(_sel, option, !shouldDel)
+			? onChange(selected, option, !shouldDel)
 			: shouldChangeObj;
 
 		if (!shouldChange && shouldChange != null) return;
 
-		if (multiple && Array.isArray(_sel)) {
+		if (multiple && Array.isArray(selected)) {
 			if (shouldChange != null) {
 				if (typeof shouldChange === 'object') {
 					// @ts-ignore
@@ -180,19 +172,17 @@
 				} else {
 					option.key = shouldChange;
 				}
-				selected.update(
-					(prev) => Array.isArray(prev) && prev.push(option) && prev
-				);
+				selected.push(option);
+				selected = selected;
 			} else if (shouldDel) {
 				// selected.splice(selected.indexOf(option), 1);
 				deleteItem(option);
 			} else {
-				selected.update(
-					(prev) => Array.isArray(prev) && prev.push(option) && prev
-				);
+				selected.push(option);
+				selected = selected; // tell svelte to rerender
 			}
 		} else {
-			selected.set(option);
+			selected = option;
 		}
 
 		if (_blur) blur();
@@ -220,22 +210,18 @@
 		(filteredOptions = options.filter(
 			(c) =>
 				c?.label?.includes(searchElm?.value || '') &&
-				(hideselected
-					? Array.isArray(_sel)
-						? !_sel.includes(c)
-						: true
-					: true)
+				(hideselected ? !selected.includes(c) : true)
 		));
 </script>
 
 <div bind:this={mainElm} {style} {id} tabindex="0" class="select">
-	<span class="values" class:flex={multiple && Array.isArray(_sel)}>
+	<span class="values" class:flex={multiple && Array.isArray(selected)}>
 		{#if multiple}
-			{#each Array.isArray(_sel) && _sel as iSelected}
+			{#each Array.isArray(selected) && selected as iSelected}
 				<div
 					on:click={(e) => {
 						e.stopPropagation();
-						let r = onChange(_sel, iSelected, false);
+						let r = onChange(selected, iSelected, false);
 						if (r || r == null) deleteItem(iSelected);
 						optionsElm.classList.remove('show');
 					}}
@@ -245,9 +231,7 @@
 				</div>
 			{/each}
 		{:else}
-			{typeof _sel === 'object' && !Array.isArray(_sel)
-				? _sel?.label || ''
-				: ''}
+			{selected?.label || ''}
 		{/if}
 		<input
 			{placeholder}
@@ -262,14 +246,9 @@
 		on:click={(e) => {
 			e.stopPropagation();
 			if (multiple) {
-				selected.update(
-					(prev) =>
-						Array.isArray(prev) &&
-						prev.splice(0, prev.length) &&
-						prev
-				);
-				// @ts-ignore
-			} else selected.set({});
+				selected.splice(0, selected.length);
+				selected = selected;
+			} else selected = {};
 		}}
 	>
 		&times;
@@ -287,9 +266,9 @@
 					setHighlighted(index);
 				}}
 				class="option"
-				class:selected={Array.isArray(_sel)
-					? _sel.includes(option)
-					: option === _sel}
+				class:selected={Array.isArray(selected)
+					? selected.includes(option)
+					: option === selected}
 			>
 				{option.label}
 			</div>
@@ -312,7 +291,7 @@
 						custom: true,
 					};
 
-					const r = onChange(_sel, option, true);
+					const r = onChange(selected, option, true);
 					if (!r) return;
 
 					options.push(option);
