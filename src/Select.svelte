@@ -313,7 +313,7 @@
 					};
 
 					const r = onChange(_sel, option, true);
-					if (!r) return;
+					if (!r && r != null) return;
 
 					options.push(option);
 					options = options;
